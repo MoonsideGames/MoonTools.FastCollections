@@ -26,7 +26,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: dotnet nuget push ./srcs/bin/Release/MoonTools.FastCollections.*.nupkg -k $API_KEY -s https://api.nuget.org/v3/index.json
+      - run: dotnet nuget push ./src/bin/Release/MoonTools.FastCollections.*.nupkg -k $API_KEY -s https://api.nuget.org/v3/index.json
 
 workflows:
   version: 2
