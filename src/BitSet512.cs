@@ -34,12 +34,6 @@ namespace MoonTools.FastCollections
             for (; count != 0; count--) if (*p++ != *q++) { return false;  }
             return true;
         }
-
-        public static bool NotEqual(uint* p, uint* q, int count)
-        {
-            for (; count != 0; count--) if (*p++ == *q++) { return false; }
-            return true;
-        }
     }
 
     public unsafe struct BitSet512 : IEquatable<BitSet512>
