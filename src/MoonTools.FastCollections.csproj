@@ -3,8 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RootNamespace>MoonTools.Collections</RootNamespace>
-    <AssemblyName>MoonTools.Collections</AssemblyName>
+    <RootNamespace>MoonTools.FastCollections</RootNamespace>
+    <AssemblyName>MoonTools.FastCollections</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>Evan Hemsley 2019</Copyright>
+    <Description>Fast collections using unsafe code.</Description>
+    <PackageProjectUrl>https://github.com/MoonsideGames/MoonTools.FastCollections</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MoonsideGames/MoonTools.FastCollections</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,7 @@
-﻿namespace MoonTools.FastCollections
+﻿using System;
+using System.Collections.Generic;
+
+namespace MoonTools.FastCollections
 {
     public static unsafe class MemoryHelper
     {
@@ -40,7 +43,7 @@
         }
     }
 
-    public unsafe struct BitSet512
+    public unsafe struct BitSet512 : IEquatable<BitSet512>
     {
         public static BitSet512 Zero { get; } = new BitSet512(0);
         public static BitSet512 Ones { get; } = new BitSet512(uint.MaxValue);
@@ -80,6 +83,16 @@
             return new BitSet512(tmp);
         }
 
+        public static bool operator ==(BitSet512 left, BitSet512 right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(BitSet512 left, BitSet512 right)
+        {
+            return !(left == right);
+        }
+
         public BitSet512 Set(int index)
         {
             var tmp = stackalloc uint[_uintLength];
@@ -98,27 +111,53 @@
 
         public bool Get(int bitIndex)
         {
-            uint thing = _buffer[bitIndex / 32];
-            return (_buffer[bitIndex / 32] & (uint)(1 << bitIndex % 32)) == _buffer[bitIndex / 32];
+            var bitInt = (uint)(1 << bitIndex % 32);
+            return (_buffer[bitIndex / 32] & bitInt) == bitInt;
         }
 
         public bool AllTrue()
         {
-            var tmp = stackalloc uint[_uintLength];
-            MemoryHelper.Fill(tmp, _uintLength, uint.MaxValue);
-            fixed (uint* p = _buffer) return MemoryHelper.Equal(p, tmp, _uintLength);
+            return this == Ones;
         }
 
         public bool AllFalse()
         {
-            var tmp = stackalloc uint[_uintLength];
-            MemoryHelper.Fill(tmp, _uintLength, 0);
-            fixed (uint* p = _buffer) return MemoryHelper.Equal(p, tmp, _uintLength);
+            return this == Zero;
         }
 
         public static BitSet512 BitwiseAnd(BitSet512 left, BitSet512 right)
         {
             return left & right;
+        }
+
+        public static BitSet512 BitwiseOr(BitSet512 left, BitSet512 right)
+        {
+            return left | right;
+        }
+
+        public static BitSet512 OnesComplement(BitSet512 bitSet)
+        {
+            return ~bitSet;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BitSet512 set && Equals(set);
+        }
+
+        public bool Equals(BitSet512 other)
+        {
+            fixed (uint* p = _buffer) return MemoryHelper.Equal(p, other._buffer, _uintLength);
+        }
+
+        public override int GetHashCode()
+        {
+            var hc = 0;
+            for (var i = 0; i < _uintLength; i++)
+            {
+                hc ^= _buffer[i].GetHashCode();
+            }
+            return hc;
         }
     }
 }
